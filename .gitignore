@@ -1,0 +1,25 @@
+Assets/*
+rust/*
+# Ignora cartelle specifiche di Python
+
+*.pyc
+
+# Ignora file di configurazione locali
+.idea/
+*.log
+*.swp
+
+# Ignora ambienti virtuali Python
+**/venv/
+**/.venv/
+.env/
+**/env/
+**/virtualenv/
+Zone.Identifier
+
+# Ignora file
+*.pt
+
+# Ignora i plot e le run
+**/runs/
+Machine Learning/Hierarchical Clustering/Assets/Plot/*

@@ -1,11 +1,14 @@
 Assets/*
 rust/*
+SCHEMA_*.md
+*.pdf
+*.html
 # Ignora cartelle specifiche di Python
-
 *.pyc
 
 # Ignora file di configurazione locali
 .idea/
+.vscode/
 *.log
 *.swp
 
@@ -15,7 +18,7 @@ rust/*
 .env/
 **/env/
 **/virtualenv/
-Zone.Identifier
+*:Zone.Identifier
 
 # Ignora file
 *.pt

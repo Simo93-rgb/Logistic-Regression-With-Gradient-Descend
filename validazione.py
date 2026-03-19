@@ -5,20 +5,47 @@ from sklearn.model_selection import KFold, LeaveOneOut, StratifiedKFold, cross_v
 from valutazione import evaluate_model, calculate_auc, calculate_auc
 from logistic_regression_with_gradient_descend import LogisticRegressionGD
 from ModelName import ModelName
+from funzioni import fit_preprocess_train, transform_with_fitted_preprocess
 import pandas as pd
 
 
-def k_fold_cross_validation(X, y, model_enum, k=5) -> tuple[dict, dict]:
-    model = LogisticRegressionGD(n_iterations=1000)
-    sk_model = LogisticRegression(max_iter=1000)
+def k_fold_cross_validation(
+    X,
+    y,
+    model_enum,
+    k=5,
+    model_params=None,
+    normalize=True,
+    class_balancer="",
+    corr=0.95
+) -> tuple[dict, dict]:
+    model_params = model_params or {}
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
 
     metrics_list = []
     sk_metrics_list = []
 
+    is_pandas_input = hasattr(X, 'iloc')
+
     for train_index, val_index in kf.split(X):
-        X_train, X_val = X[train_index], X[val_index]
-        y_train, y_val = y[train_index], y[val_index]
+        if is_pandas_input:
+            X_train_raw, X_val_raw = X.iloc[train_index], X.iloc[val_index]
+            y_train_raw, y_val_raw = y.iloc[train_index], y.iloc[val_index]
+        else:
+            X_train_raw, X_val_raw = X[train_index], X[val_index]
+            y_train_raw, y_val_raw = y[train_index], y[val_index]
+
+        X_train, y_train, preprocess_artifacts = fit_preprocess_train(
+            X_train_raw,
+            y_train_raw,
+            normalize=normalize,
+            class_balancer=class_balancer,
+            corr=corr
+        )
+        X_val, y_val = transform_with_fitted_preprocess(X_val_raw, y_val_raw, preprocess_artifacts)
+
+        model = LogisticRegressionGD(**model_params)
+        sk_model = LogisticRegression(max_iter=model_params.get('n_iterations', 1000))
 
         model.fit(X_train, y_train)
         sk_model.fit(X_train, y_train)
@@ -28,7 +55,7 @@ def k_fold_cross_validation(X, y, model_enum, k=5) -> tuple[dict, dict]:
 
         # Valuta i modelli e accumula i risultati
         metrics = evaluate_model(model, X_val, predictions, y_val, model_enum.LOGISTIC_REGRESSION_GD.value)
-        sk_metrics = evaluate_model(model, X_val, sk_predictions, y_val, model_enum.SCIKIT_LEARN.value)
+        sk_metrics = evaluate_model(sk_model, X_val, sk_predictions, y_val, model_enum.SCIKIT_LEARN.value)
 
         metrics_list.append(metrics)
         sk_metrics_list.append(sk_metrics)

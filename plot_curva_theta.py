@@ -94,18 +94,24 @@ def plot_all_thetas(X, y, model, remaining_feature_names, num_points=6):
 
 # Esegui il codice come prima, passando anche la lista dei nomi delle feature
 X, y = carica_dati()
-X_normalized, features_eliminate, y_encoded = preprocessa_dati(
+
+X_train_raw, _, y_train_raw, _ = train_test_split(
     X,
     y,
+    test_size=0.3,
+    random_state=42,
+    stratify=y
+)
+
+X_normalized, y_encoded, preprocess_artifacts = fit_preprocess_train(
+    X_train_raw,
+    y_train_raw,
     normalize=True,
     class_balancer="",
-    corr=1.01,
-    save_dataset=False
+    corr=1.01
 )
-# Ottieni i nomi delle feature
-all_feature_names = X.columns
-remaining_feature_names = [all_feature_names[i] for i in range(len(all_feature_names)) if
-                           i not in features_eliminate]
+
+remaining_feature_names = preprocess_artifacts['remaining_feature_names']
 
 # Utilizzo del metodo per plottare la curva di discesa del gradiente
 model = LogisticRegressionGD(

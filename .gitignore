@@ -1,5 +1,7 @@
 Assets/*
 rust/*
+SCHEMA_*.md
+*.pdf
 # Ignora cartelle specifiche di Python
 
 *.pyc

@@ -21,7 +21,8 @@ class LogisticRegressionGD(BaseEstimator, ClassifierMixin):
            losses (list): Valori della perdita per ogni iterazione.
        """
 
-    def __init__(self, learning_rate=0.1, n_iterations=1000, tolerance=1e-6, regularization='none', lambda_=0.0):
+    def __init__(self, learning_rate=0.1, n_iterations=1000, tolerance=1e-6, regularization='none', lambda_=0.0,
+                 random_state=42):
         """Inizializza il classificatore LogisticRegressionGD.
 
                 Args:
@@ -36,6 +37,7 @@ class LogisticRegressionGD(BaseEstimator, ClassifierMixin):
         self.tolerance = tolerance
         self.regularization = regularization
         self.lambda_ = lambda_
+        self.random_state = random_state
         self.theta = None
         self.bias = None
         self.losses = []
@@ -68,8 +70,8 @@ class LogisticRegressionGD(BaseEstimator, ClassifierMixin):
         self.classes_ = np.unique(y)  # Memorizza le classi uniche del target
         y = np.array(y).ravel()
         n_samples, n_features = X.shape
-        # self.theta = np.zeros(n_features)
-        self.theta = np.random.uniform(4.5, 4.5, size=n_features)
+        rng = np.random.default_rng(self.random_state)
+        self.theta = rng.normal(loc=0.0, scale=0.01, size=n_features)
 
         self.bias = 0
         self.losses = []
@@ -112,9 +114,9 @@ class LogisticRegressionGD(BaseEstimator, ClassifierMixin):
             self.theta -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
             if i > 0 and abs(self.losses[-2] - loss) < self.tolerance:
-                print(f"Convergence reached at iteration {i}")
-                print(
-                    f'Params: lr={self.learning_rate}, lambda={self.lambda_}, reg={self.regularization}, iter={self.n_iterations}')
+                # print(f"Convergence reached at iteration {i}")
+                # print(
+                #     f'Params: lr={self.learning_rate}, lambda={self.lambda_}, reg={self.regularization}, iter={self.n_iterations}')
                 break
 
     def predict(self, X):
@@ -149,7 +151,8 @@ class LogisticRegressionGD(BaseEstimator, ClassifierMixin):
             'n_iterations': self.n_iterations,
             'tolerance': self.tolerance,
             'regularization': self.regularization,
-            'lambda_': self.lambda_
+            'lambda_': self.lambda_,
+            'random_state': self.random_state
         }
 
     # Metodo per impostare i parametri (necessario per scikit-learn)

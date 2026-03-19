@@ -10,18 +10,32 @@ if __name__ == "__main__":
     plotting = True
     k = 10
     param_file_path = 'Assets/best_parameters.json'
-    # Carica e pre-processa i dati
+    class_balancer = ""
+    corr_threshold = 0.9
+
+    # Carica dati grezzi
     X, y = carica_dati()
-    X_normalized, features_eliminate, y_encoded = preprocessa_dati(X, y, class_balancer="", corr=0.9)
 
-    # Ottieni i nomi delle feature
-    all_feature_names = X.columns
-    remaining_feature_names = [all_feature_names[i] for i in range(len(all_feature_names)) if
-                               i not in features_eliminate]
+    # Suddivisione iniziale train/test sui dati grezzi
+    X_train_raw, X_test_raw, y_train_raw, y_test_raw = train_test_split(
+        X,
+        y,
+        test_size=0.3,
+        random_state=42,
+        stratify=y
+    )
+
+    # Preprocessing fit solo sul train e applicato al test
+    X_train, y_train, preprocess_artifacts = fit_preprocess_train(
+        X_train_raw,
+        y_train_raw,
+        class_balancer=class_balancer,
+        corr=corr_threshold
+    )
+    X_test, y_test = transform_with_fitted_preprocess(X_test_raw, y_test_raw, preprocess_artifacts)
+
+    remaining_feature_names = preprocess_artifacts['remaining_feature_names']
     print(remaining_feature_names)
-
-    # Suddivisione in train (80%), test (20%)
-    X_train, X_test, y_train, y_test = train_test_split(X_normalized, y_encoded, test_size=0.3, random_state=42)
 
     # Caricamento iper parametri
     best_params, best_score = load_best_params()
@@ -30,8 +44,12 @@ if __name__ == "__main__":
         print("Eseguendo l'ottimizzazione bayesiana...")
 
         best_params, best_score = bayesian_optimization(
-            X_normalized,
-            y_encoded,
+            X_train_raw,
+            y_train_raw,
+            cv=k,
+            class_balancer=class_balancer,
+            corr=corr_threshold,
+            n_iter=25,
             scorer=make_scorer(false_negative_rate, greater_is_better=False)
             # scorer=make_scorer(precision_score, greater_is_better=True)
             # scorer=make_scorer(recall_score, greater_is_better=True)
@@ -43,7 +61,15 @@ if __name__ == "__main__":
 
     # Cross-validation
 
-    k_fold_metrics, k_fold_sk_metrics = k_fold_cross_validation(X_train, y_train, ModelName, k=k)
+    k_fold_metrics, k_fold_sk_metrics = k_fold_cross_validation(
+        X_train_raw,
+        y_train_raw,
+        ModelName,
+        k=k,
+        model_params=best_params,
+        class_balancer=class_balancer,
+        corr=corr_threshold
+    )
     print('Stampa delle metriche in fase di cross validazione')
     stampa_metriche_ordinate(k_fold_metrics, k_fold_sk_metrics, file_name="k_fold_metriche_definitivo")
 
@@ -80,20 +106,26 @@ if __name__ == "__main__":
 
     # Plotting
     if plotting:
-        # plot_learning_curve_with_kfold(
-        #     model=LogisticRegressionGD(**best_params),
-        #     X=X_normalized,
-        #     y=y_encoded,
-        #     cv=k,
-        #     model_name=ModelName.LOGISTIC_REGRESSION_GD.value
-        # )
-        # plot_learning_curve_with_kfold(
-        #     model=LogisticRegression(max_iter=best_params.get('n_iterations', 1000)),
-        #     X=X_normalized,
-        #     y=y_encoded,
-        #     cv=k,
-        #     model_name=ModelName.SCIKIT_LEARN.value
-        # )
+        plot_learning_curve_with_kfold(
+            model=LogisticRegressionGD(**best_params),
+            X=X_train_raw,
+            y=y_train_raw,
+            cv=k,
+            preprocess_fit_fn=fit_preprocess_train,
+            preprocess_apply_fn=transform_with_fitted_preprocess,
+            preprocess_kwargs={"class_balancer": class_balancer, "corr": corr_threshold},
+            model_name=ModelName.LOGISTIC_REGRESSION_GD.value
+        )
+        plot_learning_curve_with_kfold(
+            model=LogisticRegression(max_iter=best_params.get('n_iterations', 1000)),
+            X=X_train_raw,
+            y=y_train_raw,
+            cv=k,
+            preprocess_fit_fn=fit_preprocess_train,
+            preprocess_apply_fn=transform_with_fitted_preprocess,
+            preprocess_kwargs={"class_balancer": class_balancer, "corr": corr_threshold},
+            model_name=ModelName.SCIKIT_LEARN.value
+        )
         plot_graphs(X_train, y_train, y_test, test_predictions, test_sk_predictions, ModelName, remaining_feature_names)
         plot_results(X_test, y_test, model, sk_model, test_predictions, test_sk_predictions, scores,
                      sk_scores, ModelName)

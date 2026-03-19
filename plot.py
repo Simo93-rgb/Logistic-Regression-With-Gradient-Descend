@@ -3,10 +3,13 @@ import os
 import numpy
 import numpy as np
 from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix, precision_recall_curve, auc, precision_score, \
-    f1_score, recall_score
+    f1_score, recall_score, log_loss
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import learning_curve
+from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
+from sklearn.base import clone
 
 from logistic_regression_with_gradient_descend import LogisticRegressionGD
 
@@ -237,7 +240,18 @@ def plot_precision_recall(y_true, y_scores, model_name="", save_file=True):
     plt.show()
 
 
-def plot_learning_curve_with_kfold(model, X, y, cv=5, model_name="", scoring='neg_log_loss', fig_size=(16, 12)):
+def plot_learning_curve_with_kfold(
+    model,
+    X,
+    y,
+    cv=5,
+    model_name="",
+    scoring='neg_log_loss',
+    fig_size=(16, 12),
+    preprocess_fit_fn=None,
+    preprocess_apply_fn=None,
+    preprocess_kwargs=None
+):
     """
     Plotta la learning curve utilizzando k-fold cross-validation.
 
@@ -258,12 +272,65 @@ def plot_learning_curve_with_kfold(model, X, y, cv=5, model_name="", scoring='ne
         model_name = type(model).__name__
 
     # Frazioni del training set da usare (es. dal 10% al 100%)
-    train_sizes = np.linspace(0.1, 1.0, cv)
+    train_sizes_fracs = np.linspace(0.1, 1.0, cv)
 
-    # Calcola learning curve con K-Fold CV
-    train_sizes, train_scores, val_scores = learning_curve(
-        model, X, y, cv=cv, train_sizes=train_sizes, scoring=scoring, n_jobs=-1
-    )
+    use_leak_safe_cv = preprocess_fit_fn is not None and preprocess_apply_fn is not None
+    preprocess_kwargs = preprocess_kwargs or {}
+
+    if not use_leak_safe_cv:
+        # Calcola learning curve con API sklearn standard
+        train_sizes, train_scores, val_scores = learning_curve(
+            model, X, y, cv=cv, train_sizes=train_sizes_fracs, scoring=scoring, n_jobs=-1
+        )
+    else:
+        # Modalita leak-safe: preprocessing rifittato nel train di ogni fold
+        if not hasattr(X, 'iloc'):
+            raise ValueError("Per la modalita leak-safe X deve essere un DataFrame pandas.")
+        if not hasattr(y, 'iloc'):
+            raise ValueError("Per la modalita leak-safe y deve essere una Series pandas.")
+
+        kf = StratifiedKFold(n_splits=cv, shuffle=True, random_state=42)
+        train_scores = []
+        val_scores = []
+        train_sizes = []
+        rng = np.random.default_rng(42)
+
+        for frac in train_sizes_fracs:
+            fold_train_scores = []
+            fold_val_scores = []
+
+            for train_index, val_index in kf.split(X, y):
+                X_train_fold_raw, X_val_fold_raw = X.iloc[train_index], X.iloc[val_index]
+                y_train_fold_raw, y_val_fold_raw = y.iloc[train_index], y.iloc[val_index]
+
+                n_train_samples = max(2, int(len(X_train_fold_raw) * frac))
+                sub_idx = rng.choice(len(X_train_fold_raw), size=n_train_samples, replace=False)
+                X_train_sub_raw = X_train_fold_raw.iloc[sub_idx]
+                y_train_sub_raw = y_train_fold_raw.iloc[sub_idx]
+
+                X_train_proc, y_train_proc, preprocess_artifacts = preprocess_fit_fn(
+                    X_train_sub_raw,
+                    y_train_sub_raw,
+                    **preprocess_kwargs
+                )
+                X_val_proc, y_val_proc = preprocess_apply_fn(X_val_fold_raw, y_val_fold_raw, preprocess_artifacts)
+
+                model_fold = clone(model)
+                model_fold.fit(X_train_proc, y_train_proc)
+
+                train_proba = model_fold.predict_proba(X_train_proc)[:, 1]
+                val_proba = model_fold.predict_proba(X_val_proc)[:, 1]
+
+                fold_train_scores.append(-log_loss(y_train_proc, train_proba, labels=[0, 1]))
+                fold_val_scores.append(-log_loss(y_val_proc, val_proba, labels=[0, 1]))
+
+            train_scores.append(fold_train_scores)
+            val_scores.append(fold_val_scores)
+            train_sizes.append(n_train_samples)
+
+        train_scores = np.array(train_scores)
+        val_scores = np.array(val_scores)
+        train_sizes = np.array(train_sizes)
 
     # Calcola la media e deviazione standard delle performance
     train_mean = np.mean(train_scores, axis=1)
@@ -274,9 +341,7 @@ def plot_learning_curve_with_kfold(model, X, y, cv=5, model_name="", scoring='ne
     # Invertiamo il segno se usiamo una metrica negativa (come 'neg_log_loss')
     if scoring in ['neg_log_loss', 'neg_mean_squared_error', 'neg_mean_absolute_error']:
         train_mean *= -1
-        train_std *= -1
         val_mean *= -1
-        val_std *= -1
 
     # Plot della learning curve
     plt.figure(figsize=fig_size)
@@ -284,7 +349,8 @@ def plot_learning_curve_with_kfold(model, X, y, cv=5, model_name="", scoring='ne
     plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1, color="blue")
     plt.plot(train_sizes, val_mean, label="Cross-validation Error", color="orange")
     plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, alpha=0.1, color="orange")
-    plt.ylim(0, 0.5)
+    y_upper = max(np.max(train_mean + train_std), np.max(val_mean + val_std))
+    plt.ylim(0, max(0.5, y_upper * 1.05))
     plt.title(f"Learning Curve: {model_name}", fontsize=24)
     plt.xlabel("Number of Training Samples", fontsize=18)
     plt.ylabel("Error (Cost Function)", fontsize=18)

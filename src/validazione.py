@@ -2,10 +2,10 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold, LeaveOneOut, StratifiedKFold, cross_val_score
-from valutazione import evaluate_model, calculate_auc, calculate_auc
-from logistic_regression_with_gradient_descend import LogisticRegressionGD
-from ModelName import ModelName
-from funzioni import fit_preprocess_train, transform_with_fitted_preprocess
+from src.valutazione import evaluate_model, calculate_auc
+from src.logistic_regression_with_gradient_descend import LogisticRegressionGD
+from src.ModelName import ModelName
+from src.funzioni import fit_preprocess_train, transform_with_fitted_preprocess
 import pandas as pd
 
 

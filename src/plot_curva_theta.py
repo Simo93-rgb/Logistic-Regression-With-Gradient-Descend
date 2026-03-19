@@ -1,6 +1,6 @@
 import matplotlib.cm as cm
-from funzioni import *
-from logistic_regression_with_gradient_descend import LogisticRegressionGD
+from src.funzioni import *
+from src.logistic_regression_with_gradient_descend import LogisticRegressionGD
 
 
 def plot_gradient_descent(X, y, model, i=0, num_points=6, save_file=False, feature=""):
@@ -72,7 +72,7 @@ def plot_gradient_descent(X, y, model, i=0, num_points=6, save_file=False, featu
     plt.grid(True)
 
     if save_file:
-        plt.savefig(f'Assets/thetas/theta_{feature}.png', format='png', dpi=600, bbox_inches='tight')
+        plt.savefig(f'assets/thetas/theta_{feature}.png', format='png', dpi=600, bbox_inches='tight')
 
     plt.show()
     plt.close()

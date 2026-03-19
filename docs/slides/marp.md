@@ -165,7 +165,7 @@ La versione custom e pienamente competitiva con la baseline industriale.
     </ul>
   </div>
   <div style="flex: 0 0 100%;">
-    <img src="../Assets/FNR/learning_curve_LogisticRegressionGD.png" width="100%">
+    <img src="../assets/FNR/learning_curve_LogisticRegressionGD.png" width="100%">
   </div>
 </div>
 
@@ -182,7 +182,7 @@ La versione custom e pienamente competitiva con la baseline industriale.
     </ul>
   </div>
   <div style="flex: 0 0 100%;">
-    <img src="../Assets/FNR/learning_curve_Scikit_learn.png" width="100%">
+    <img src="../assets/FNR/learning_curve_Scikit_learn.png" width="100%">
   </div>
 </div>
 
@@ -192,8 +192,8 @@ La versione custom e pienamente competitiva con la baseline industriale.
 ## Curve Precision-Recall
 
 <div style="display: flex; justify-content: space-between; gap: 20px;">
-  <img src="../Assets/FNR/prc_auc_modello_LogisticRegressionGD.png" width="48%">
-  <img src="../Assets/FNR/prc_auc_modello_Scikit_learn.png" width="48%">
+  <img src="../assets/FNR/prc_auc_modello_LogisticRegressionGD.png" width="48%">
+  <img src="../assets/FNR/prc_auc_modello_Scikit_learn.png" width="48%">
 </div>
 
 Entrambi i modelli mostrano elevata capacita discriminativa.
@@ -202,8 +202,8 @@ Entrambi i modelli mostrano elevata capacita discriminativa.
 ## Effetto della regolarizzazione
 
 <div style="display: flex; justify-content: space-between; gap: 20px;">
-  <img src="../Assets/FNR/regularization_effect_ridge.png" width="48%">
-  <img src="../Assets/FNR/regularization_effect_lasso.png" width="48%">
+  <img src="../assets/FNR/regularization_effect_ridge.png" width="48%">
+  <img src="../assets/FNR/regularization_effect_lasso.png" width="48%">
 </div>
 
 Trade-off tra stabilita dei coefficienti e sparsita.

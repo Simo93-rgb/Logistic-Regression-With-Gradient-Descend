@@ -2,14 +2,14 @@ import time
 
 from sklearn.metrics import cohen_kappa_score, matthews_corrcoef
 
-from funzioni import *
-from validazione import *
+from src.funzioni import *
+from src.validazione import *
 
 if __name__ == "__main__":
     start_time = time.time()
     plotting = True
     k = 10
-    param_file_path = 'Assets/best_parameters.json'
+    param_file_path = 'assets/best_parameters.json'
     class_balancer = ""
     corr_threshold = 0.9
 

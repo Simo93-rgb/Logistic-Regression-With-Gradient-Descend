@@ -58,7 +58,7 @@ dove $\eta$ è il learning rate.
 - Task: classificazione Benigno vs Maligno.
 - Feature: variabili numeriche continue.
 
-Caricamento e caching locale in [funzioni.py](funzioni.py) con salvataggio in [Assets/dataset](Assets/dataset).
+Caricamento e caching locale in [funzioni.py](funzioni.py) con salvataggio in [assets/dataset](assets/dataset).
 
 ## 4. Architettura del progetto
 
@@ -136,9 +136,9 @@ flowchart TD
 ## 7. Risultati dell'ultima esecuzione
 
 Riferimenti file:
-- iperparametri: [Assets/best_parameters.json](Assets/best_parameters.json)
-- metriche CV: [Assets/k_fold_metriche_definitivo.csv](Assets/k_fold_metriche_definitivo.csv)
-- metriche test: [Assets/metriche_modelli_test_definitivo.csv](Assets/metriche_modelli_test_definitivo.csv)
+- iperparametri: [assets/best_parameters.json](assets/best_parameters.json)
+- metriche CV: [assets/k_fold_metriche_definitivo.csv](assets/k_fold_metriche_definitivo.csv)
+- metriche test: [assets/metriche_modelli_test_definitivo.csv](assets/metriche_modelli_test_definitivo.csv)
 
 ### 7.1 Migliori iperparametri trovati
 
@@ -169,8 +169,8 @@ Interpretazione sintetica:
 ### 7.4 Ablation sul target di ottimizzazione (FNR vs MCC)
 
 Per valutare la sensibilità del tuning al target, sono state eseguite due ottimizzazioni separate salvate in:
-- [Assets/FNR](Assets/FNR)
-- [Assets/MCC](Assets/MCC)
+- [assets/FNR](assets/FNR)
+- [assets/MCC](assets/MCC)
 
 Risultati principali:
 - i parametri ottimali cambiano tra i due target;
@@ -181,26 +181,26 @@ Risultati principali:
 ## 8. Analisi grafica
 
 Learning curve:
-- [Learning curve custom](Assets/learning_curve_LogisticRegressionGD.png)
-- [Learning curve scikit-learn](Assets/learning_curve_Scikit_learn.png)
+- [Learning curve custom](assets/learning_curve_LogisticRegressionGD.png)
+- [Learning curve scikit-learn](assets/learning_curve_Scikit_learn.png)
 
 Curve ROC:
-- [ROC custom](Assets/ROC_curve_Modello%20LogisticRegressionGD.png)
-- [ROC scikit-learn](Assets/ROC_curve_Modello%20Scikit_learn.png)
+- [ROC custom](assets/ROC_curve_Modello%20LogisticRegressionGD.png)
+- [ROC scikit-learn](assets/ROC_curve_Modello%20Scikit_learn.png)
 
 Curve Precision-Recall:
-- [PRC custom](Assets/prc_auc_modello_LogisticRegressionGD.png)
-- [PRC scikit-learn](Assets/prc_auc_modello_Scikit_learn.png)
+- [PRC custom](assets/prc_auc_modello_LogisticRegressionGD.png)
+- [PRC scikit-learn](assets/prc_auc_modello_Scikit_learn.png)
 
 Confusion matrix:
-- [Confusion matrix custom](Assets/confusion_matrix_Modello%20LogisticRegressionGD.png)
-- [Confusion matrix scikit-learn](Assets/confusion_matrix_Modello%20Scikit_learn.png)
+- [Confusion matrix custom](assets/confusion_matrix_Modello%20LogisticRegressionGD.png)
+- [Confusion matrix scikit-learn](assets/confusion_matrix_Modello%20Scikit_learn.png)
 
 Confronti aggiuntivi:
-- [Confronto metriche aggregato](Assets/metrics_comparison.png)
-- [Effetto regolarizzazione Ridge](Assets/regularization_effect_ridge.png)
-- [Effetto regolarizzazione Lasso](Assets/regularization_effect_lasso.png)
-- [Funzione sigmoide](Assets/sigmoid_function.png)
+- [Confronto metriche aggregato](assets/metrics_comparison.png)
+- [Effetto regolarizzazione Ridge](assets/regularization_effect_ridge.png)
+- [Effetto regolarizzazione Lasso](assets/regularization_effect_lasso.png)
+- [Funzione sigmoide](assets/sigmoid_function.png)
 
 ## 9. Confronto con scikit-learn
 

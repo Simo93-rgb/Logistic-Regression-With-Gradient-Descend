@@ -1,5 +1,5 @@
 # Carica e pre-processa i dati
-from funzioni import *
+from src.funzioni import *
 
 X, y = carica_dati()
 
@@ -26,7 +26,7 @@ X_test, y_test = transform_with_fitted_preprocess(
 
 # Salva un dataset preprocessato in modo leak-safe (fit su train, apply su test)
 file_name = 'breast_cancer_wisconsin_edited'
-file_path = 'Assets/dataset'
+file_path = 'assets/dataset'
 
 df_train = pd.DataFrame(X_train, columns=preprocess_artifacts['remaining_feature_names'])
 df_train['target'] = y_train

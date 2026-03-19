@@ -6,7 +6,7 @@ import pandas as pd
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.metrics import make_scorer
-from logistic_regression_with_gradient_descend import LogisticRegressionGD
+from src.logistic_regression_with_gradient_descend import LogisticRegressionGD
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
@@ -15,13 +15,13 @@ from ucimlrepo import fetch_ucirepo
 from skopt import gp_minimize
 from skopt.space import Real, Integer, Categorical
 from skopt.utils import use_named_args
-from plot import *
+from src.plot import *
 import os
 import json
-from ModelName import ModelName
+from src.ModelName import ModelName
 
 
-def carica_dati(file_path='Assets/dataset', file_name='breast_cancer_wisconsin'):
+def carica_dati(file_path='assets/dataset', file_name='breast_cancer_wisconsin'):
     if not os.path.exists(f'{file_path}/{file_name}.csv'):
         dataset = fetch_ucirepo(id=17)
         X = dataset.data.features
@@ -43,7 +43,7 @@ def carica_dati(file_path='Assets/dataset', file_name='breast_cancer_wisconsin')
     return X, y
 
 
-def preprocessa_dati(X, y, normalize=True, class_balancer="", corr=0.95, save_dataset=False, file_path='Assets/dataset'):
+def preprocessa_dati(X, y, normalize=True, class_balancer="", corr=0.95, save_dataset=False, file_path='assets/dataset'):
     raise RuntimeError(
         "preprocessa_dati e disabilitata per prevenire data leakage. "
         "Usa fit_preprocess_train(...) e transform_with_fitted_preprocess(...)."
@@ -187,7 +187,7 @@ def bayesian_optimization(
     Ottimizzazione bayesiana leak-safe: ogni valutazione usa CV con preprocessing
     rifittato nel train di ciascun fold.
     """
-    from validazione import k_fold_cross_validation
+    from src.validazione import k_fold_cross_validation
 
     metric_name_by_scorer = {
         'false_negative_rate': 'fn_rate',
@@ -258,7 +258,7 @@ def save_best_params(best_params, file_path="best_parameters.json"):
     print(f"Parametri salvati in {file_path}.")
 
 
-def load_best_params(X_train=None, y_train=None, file_path="Assets/best_parameters.json"):
+def load_best_params(X_train=None, y_train=None, file_path="assets/best_parameters.json"):
     # Controllo se esiste il file con i parametri salvati
     if os.path.exists(file_path):
         print(f"Caricamento dei parametri ottimali da {file_path}...")
@@ -277,7 +277,7 @@ def load_best_params(X_train=None, y_train=None, file_path="Assets/best_paramete
     return best_params, best_score
 
 
-def stampa_metriche_ordinate(metriche_modello1, metriche_modello2, file_path="Assets/", save_to_file=True,
+def stampa_metriche_ordinate(metriche_modello1, metriche_modello2, file_path="assets/", save_to_file=True,
                              file_name=""):
     # Creazione della lista delle metriche
     lista_metriche = [metriche_modello1, metriche_modello2]

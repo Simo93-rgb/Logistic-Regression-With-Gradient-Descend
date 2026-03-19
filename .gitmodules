@@ -1,0 +1,4 @@
+[submodule "marp/neobeam"]
+	path = marp/neobeam
+	url = git@github.com:mikael-ros/neobeam.git
+	branch = main

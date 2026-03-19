@@ -155,26 +155,36 @@ La versione custom e pienamente competitiva con la baseline industriale.
 
 ## Learning curve: modello custom
 
-![bg fit right:50%](../Assets/FNR/learning_curve_LogisticRegressionGD.png)
-
-**Lettura del grafico:**
-
-* Training error basso e stabile.
-* CV error in riduzione all'aumentare dei campioni.
-* Gap residuo limitato nella parte finale.
+<div style="display: flex; align-items: center; gap: 20px;">
+  <div style="flex: 0 0 50%;">
+    <b>Lettura del grafico:</b>
+    <ul>
+      <li>Training error basso e stabile.</li>
+      <li>CV error in riduzione all'aumentare dei campioni.</li>
+      <li>Gap residuo limitato nella parte finale.</li>
+    </ul>
+  </div>
+  <div style="flex: 0 0 100%;">
+    <img src="../Assets/FNR/learning_curve_LogisticRegressionGD.png" width="100%">
+  </div>
+</div>
 
 ---
-<!-- header: 'Learning Curve - Baseline' -->
-
 ## Learning curve: baseline scikit-learn
 
-![bg fit right:50%](../Assets/FNR/learning_curve_Scikit_learn.png)
-
-**Lettura del grafico:**
-
-* Andamento regolare e robusto.
-* Gap train/CV contenuto.
-* Prestazioni finali allineate al modello custom.
+<div style="display: flex; align-items: center; gap: 20px;">
+  <div style="flex: 0 0 50%;">
+    <b>Lettura del grafico:</b>
+    <ul>
+      <li>Andamento regolare e robusto.</li>
+      <li>Gap train/CV contenuto.</li>
+      <li>Prestazioni finali allineate al modello custom.</li>
+    </ul>
+  </div>
+  <div style="flex: 0 0 100%;">
+    <img src="../Assets/FNR/learning_curve_Scikit_learn.png" width="100%">
+  </div>
+</div>
 
 ---
 <!-- header: 'ROC e PRC' -->

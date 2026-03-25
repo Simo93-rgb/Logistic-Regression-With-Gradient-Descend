@@ -180,27 +180,48 @@ Risultati principali:
 
 ## 8. Analisi grafica
 
-Learning curve:
-- [Learning curve custom](assets/learning_curve_LogisticRegressionGD.png)
-- [Learning curve scikit-learn](assets/learning_curve_Scikit_learn.png)
+### Learning curve:
 
-Curve ROC:
-- [ROC custom](assets/ROC_curve_Modello%20LogisticRegressionGD.png)
-- [ROC scikit-learn](assets/ROC_curve_Modello%20Scikit_learn.png)
+<p align="center">
+    <img src="assets/learning_curve_LogisticRegressionGD.png" alt="Learning curve custom" width="49%" />
+    <img src="assets/learning_curve_Scikit_learn.png" alt="Learning curve scikit-learn" width="49%" />
+</p>
 
-Curve Precision-Recall:
-- [PRC custom](assets/prc_auc_modello_LogisticRegressionGD.png)
-- [PRC scikit-learn](assets/prc_auc_modello_Scikit_learn.png)
+### Curve ROC:
 
-Confusion matrix:
-- [Confusion matrix custom](assets/confusion_matrix_Modello%20LogisticRegressionGD.png)
-- [Confusion matrix scikit-learn](assets/confusion_matrix_Modello%20Scikit_learn.png)
+<p align="center">
+    <img src="assets/ROC_curve_Modello%20LogisticRegressionGD.png" alt="ROC custom" width="49%" />
+    <img src="assets/ROC_curve_Modello%20Scikit_learn.png" alt="ROC scikit-learn" width="49%" />
+</p>
 
-Confronti aggiuntivi:
-- [Confronto metriche aggregato](assets/metrics_comparison.png)
-- [Effetto regolarizzazione Ridge](assets/regularization_effect_ridge.png)
-- [Effetto regolarizzazione Lasso](assets/regularization_effect_lasso.png)
-- [Funzione sigmoide](assets/sigmoid_function.png)
+### Curve Precision-Recall:
+
+<p align="center">
+    <img src="assets/prc_auc_modello_LogisticRegressionGD.png" alt="PRC custom" width="49%" />
+    <img src="assets/prc_auc_modello_Scikit_learn.png" alt="PRC scikit-learn" width="49%" />
+</p>
+
+### Confusion matrix:
+
+<p align="center">
+    <img src="assets/confusion_matrix_Modello%20LogisticRegressionGD.png" alt="Confusion matrix custom" width="49%" />
+    <img src="assets/confusion_matrix_Modello%20Scikit_learn.png" alt="Confusion matrix scikit-learn" width="49%" />
+</p>
+
+### Confronti aggiuntivi:
+
+<p align="center">
+    <img src="assets/metrics_comparison.png" alt="Confronto metriche aggregato" width="70%" />
+</p>
+
+<p align="center">
+    <img src="assets/regularization_effect_ridge.png" alt="Effetto regolarizzazione Ridge" width="49%" />
+    <img src="assets/regularization_effect_lasso.png" alt="Effetto regolarizzazione Lasso" width="49%" />
+</p>
+
+<p align="center">
+    <img src="assets/sigmoid_function.png" alt="Funzione sigmoide" width="60%" />
+</p>
 
 ## 9. Confronto con scikit-learn
 

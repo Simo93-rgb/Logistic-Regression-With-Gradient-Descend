@@ -30,7 +30,7 @@ def plot_sigmoid():
     plt.ylabel('Sigmoid(z)', fontsize=18)
     plt.grid(True)
     plt.savefig('assets/sigmoid_function.png', format='png', dpi=600, bbox_inches='tight')  # Risoluzione migliorata
-    plt.show()
+    # plt.show()
 
 
 def plot_corr_matrix(corr_matrix: numpy.ndarray, features_eliminate=None):
@@ -47,7 +47,7 @@ def plot_corr_matrix(corr_matrix: numpy.ndarray, features_eliminate=None):
 
     plt.savefig('assets/correlation_matrix_breast_cancer.png', format='png', dpi=600,
                 bbox_inches='tight')  # Risoluzione migliorata
-    plt.show()
+    # plt.show()
 
 
 def plot_class_distribution(y, file_name=""):
@@ -77,7 +77,7 @@ def plot_class_distribution(y, file_name=""):
         plt.savefig(f'assets/{file_name}.png', format='png', dpi=600, bbox_inches='tight')  # Risoluzione migliorata
 
     # Mostra il grafico
-    plt.show()
+    # plt.show()
 
 
 def plot_confusion_matrix(y_true, y_pred, model_name):
@@ -104,7 +104,7 @@ def plot_confusion_matrix(y_true, y_pred, model_name):
 
     # Salva il plot con maggiore risoluzione
     plt.savefig(f'assets/confusion_matrix_{model_name}.png', format='png', dpi=600, bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
 
 
@@ -124,7 +124,7 @@ def plot_roc_curve(y_true, y_probs, model_name):
     plt.legend(loc="lower right", fontsize=16)
     plt.savefig(f'assets/ROC_curve_{model_name}.png', format='png', dpi=600,
                 bbox_inches='tight')  # Risoluzione migliorata
-    plt.show()
+    # plt.show()
 
 
 def plot_roc_curve_sklearn(model, X_val, y_val, model_name=""):
@@ -144,7 +144,7 @@ def plot_roc_curve_sklearn(model, X_val, y_val, model_name=""):
     plt.legend(loc="lower right", fontsize=16)
     plt.savefig(f'assets/ROC_curve_{model_name}.png', format='png', dpi=600,
                 bbox_inches='tight')  # Risoluzione migliorata
-    plt.show()
+    # plt.show()
 
 
 def plot_metrics_comparison(metrics_dict: dict, model_names):
@@ -184,7 +184,7 @@ def plot_metrics_comparison(metrics_dict: dict, model_names):
 
     plt.tight_layout()
     plt.savefig('assets/metrics_comparison.png', format='png', dpi=600, bbox_inches='tight')  # Risoluzione migliorata
-    plt.show()
+    # plt.show()
 
 
 
@@ -211,7 +211,7 @@ def plot_regularization_effect(X_train, y_train, feature_names, lambdas, regular
     plt.legend(loc='upper left', fontsize=16)
     plt.savefig(f'assets/regularization_effect_{regularization_type}.png', format='png', dpi=600,
                 bbox_inches='tight')  # Risoluzione migliorata
-    plt.show()
+    # plt.show()
 
 
 def plot_precision_recall(y_true, y_scores, model_name="", save_file=True):
@@ -237,7 +237,7 @@ def plot_precision_recall(y_true, y_scores, model_name="", save_file=True):
         plt.savefig(f'assets/precision_vs_recall_{model_name}.png', format='png', dpi=600, bbox_inches='tight')
 
     # Mostra il grafico
-    plt.show()
+    # plt.show()
 
 
 def plot_learning_curve_with_kfold(
@@ -361,7 +361,7 @@ def plot_learning_curve_with_kfold(
     if model_name:
         os.makedirs('assets', exist_ok=True)
         plt.savefig(f'assets/learning_curve_{model_name}.png', format='png', dpi=600, bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
 
 def plot_learning_curve_with_loss(estimator, X_train, y_train, cv=10, train_sizes=np.linspace(0.1, 1.0, 10),
@@ -408,7 +408,7 @@ def plot_learning_curve_with_loss(estimator, X_train, y_train, cv=10, train_size
     plt.ylabel("Loss (Log-Loss)")
     plt.legend(loc="best")
     plt.grid()
-    plt.show()
+    # plt.show()
 
 
 def plot_results(X_test, y_test, model, sk_model, test_predictions, test_sk_predictions, scores, sk_scores, model_enum):
@@ -499,7 +499,7 @@ def plot_prc_auc(model, X_test, y_test, model_name="", fig_size=(10, 8), save_fi
         plt.savefig(f'assets/prc_auc_{model_name}.png', format='png', dpi=600, bbox_inches='tight')
 
     # Mostra il grafico
-    plt.show()
+    # plt.show()
 
 
 

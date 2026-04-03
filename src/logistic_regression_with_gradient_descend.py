@@ -177,7 +177,7 @@ class LogisticRegressionGD(BaseEstimator, ClassifierMixin):
         plt.ylabel('Loss')
         plt.ylim(0, 0.15)
         plt.grid(True)
-        plt.show()
+        # plt.show()
 
 
 
